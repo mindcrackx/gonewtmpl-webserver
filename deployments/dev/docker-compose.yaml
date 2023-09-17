@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    # user: "1001:1001"
+    restart: always
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+    volumes:
+      - "./prometheus.yaml:/etc/prometheus/prometheus.yaml"
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    user: "1001:1001"
+    restart: always
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: supersecret
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - "./grafana_datasource.yaml:/etc/grafana/provisioning/datasources/grafana_datasource.yaml"
+      - "./grafana_dashboards.yaml:/etc/grafana/provisioning/dashboards/grafana_dashboards.yaml"
+      - "./grafana_myapp_dashboard.json:/etc/grafana/provisioning/dashboards/grafana_myapp_dashboard.json"
+    ports:
+      - "3000:3000"
+
+  server:
+    build: ../../
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - "MYAPP_LOG_LEVEL=info"
+      - "MYAPP_LOG_HANDLER=text"

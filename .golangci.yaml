@@ -1,0 +1,57 @@
+run:
+  modules-download-mode: mod
+  skip-dirs:
+    - vendor
+  deadline: 5m
+  issues-exit-code: 1
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+
+  govet:
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - hugeParam
+
+  goconst:
+    min-len: 2
+    min-occurrences: 3
+
+  staticcheck:
+    go: "1.21"
+    checks: [ "all" ]
+
+  nolintlint:
+    require-specific: true
+    require-explanation: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - errcheck
+    - exhaustive
+    - exportloopref
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - nakedret
+    - nolintlint
+    - prealloc
+    - revive
+    - staticcheck
+    - unused
+    - whitespace
